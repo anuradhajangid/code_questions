@@ -1,3 +1,5 @@
+#https://leetcode.com/problems/generate-parentheses/description/
+from typing import List
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         # Recursive approach
