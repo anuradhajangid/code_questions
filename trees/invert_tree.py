@@ -96,10 +96,11 @@ class Solution:
         return root
 
 
-head = Tree()
+tr = Tree()
+head = None
 input = [4,2,7,1,3,6,9]
 for item in input:
-    head.insert(item)
+    head = tr.insert(item)
 
 s = Solution()
 s.invertTree(head)

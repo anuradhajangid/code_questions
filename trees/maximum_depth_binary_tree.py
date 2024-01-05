@@ -83,7 +83,15 @@ class Tree:
             self.traversePostOrder(node.left)
             self.traversePostOrder(node.right)
             print(node.val)
-    
+        
+
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def maxfun(root, count):
+            if root is None:
+                return count
+            return max(maxfun(root.left, count+1), maxfun(root.right, count+1))
+        return maxfun(root, 0)
 
 
 tr = Tree()
@@ -91,3 +99,6 @@ head = None
 input = [9,20,15,7]
 for item in input:
     head = tr.insert(head, item)
+
+s = Solution()
+print(s.maxDepth(head))
