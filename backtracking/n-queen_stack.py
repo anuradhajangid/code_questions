@@ -1,3 +1,4 @@
+#https://www.educative.io/courses/grokking-coding-interview-patterns-python/solution-n-queens
 class NQueen:
     def __init__(self, n) -> None:
         self.n = n
