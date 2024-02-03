@@ -12,34 +12,23 @@ class NQueen:
                 return False
         return True
 
+    def recursivelyFindBoardSolution(result, solution, n, row):
+        if n == row:
+            result.append(solution[:])
+            return
+        for i in range(n):
+            if NQueen.isValidMove(row, i, solution):
+                solution[row] = i
+                NQueen.recursivelyFindBoardSolution(result, solution, n, row+1)
+
     
     def findBoardSolutions(self):
-        solutionStack = []
         solution  = [-1] * self.n
         result = []
-        row = 0
-        col = 0
+        NQueen.recursivelyFindBoardSolution(result, solution, self.n, 0)
+        return (len(result), result)
 
-        while row < self.n:
-            while col < self.n:
-                if NQueen.isValidMove(row, col, solution):
-                    solutionStack.append(col)
-                    solution[row] = col
-                    row += 1
-                    col = 0
-                    break
-                col += 1
-            if col == self.n:
-                if solutionStack:
-                    col = solutionStack.pop() + 1
-                    row -= 1
-                else:
-                    break
-            if row == self.n:
-                result.append(solution[:])
-                row -= 1
-                col = solutionStack.pop()+1
-        return len(result), result
+        
     
     def postProcess(self, solution):
         result = []
