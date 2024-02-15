@@ -1,5 +1,7 @@
 #https://www.educative.io/courses/grokking-coding-interview-patterns-python/flood-fill
 def flood_fill(grid, sr, sc, target):
+    if grid[sr][sc] == target:
+        return grid
     orig = grid[sr][sc]
     visited = []
     fill(grid,sr,sc,target, orig, visited)
