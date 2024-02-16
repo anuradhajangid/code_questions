@@ -2,22 +2,21 @@
 def matchstick_to_square(matchsticks):
     matchsticks = sorted(matchsticks,reverse=True)
     totalsum = sum(matchsticks)
-    if matchsticks[0] > totalsum/4 or int(totalsum/4) * 4 != totalsum:
+    sidesum = int(totalsum/4)
+    if matchsticks[0] > sidesum or sidesum * 4 != totalsum:
         return False
     sides = [0,0,0,0]
-    return backtrack(sides, matchsticks, 0, int(totalsum/4))
-
-def backtrack(sides, matchsticks, index, sum):
-    if index >= len(matchsticks):
-        return True
-    for i in range(4):
-        if sides[i] + matchsticks[index] <= sum:
-            sides[i]  += matchsticks[index]
-            if backtrack(sides,matchsticks, index+1, sum):
-                return True
-            sides[i]  -= matchsticks[index]
-    return False
-
+    def backtrack(index):
+        if index >= len(matchsticks):
+            return True
+        for i in range(4):
+            if sides[i] + matchsticks[index] <= sidesum:
+                sides[i]  += matchsticks[index]
+                if backtrack(index+1):
+                    return True
+                sides[i]  -= matchsticks[index]
+        return False
+    return backtrack(0)
     
 
 # driver code
