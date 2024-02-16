@@ -7,6 +7,7 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         result = []
+        nums = sorted(nums)
         def backtrack(indexednums, current, result):
             if not current in result:
                 result.append(current)
