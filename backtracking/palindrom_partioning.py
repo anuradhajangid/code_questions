@@ -9,7 +9,7 @@ class Solution(object):
         result = []
         def backtracking(index, current):
             if index >= len(s):
-                result.append(copy.deepcopy(current))
+                result.append(list(current))
                 return 
             for i in range(index,len(s)):
                 if isValidPalindrom(s, index, i):
@@ -19,7 +19,7 @@ class Solution(object):
 
 
         def isValidPalindrom(string, start, end):
-            while start != end and start < end:
+            while start != end and start <= end:
                 if string[start] != string[end]:
                     return False
                 start += 1
