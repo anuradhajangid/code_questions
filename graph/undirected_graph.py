@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 
-class Graph:
+class UnDirectedGraph:
     def __init__(self) -> None:
         self.graph = defaultdict(list)
     
@@ -36,7 +36,7 @@ if __name__ == '__main__':
  
     # Create a graph given in
     # the above diagram
-    g = Graph()
+    g = UnDirectedGraph()
     g.addEdge(0, 1)
     g.addEdge(0, 2)
     g.addEdge(1, 2)
