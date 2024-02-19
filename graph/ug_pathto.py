@@ -12,14 +12,17 @@ class UnDirectedGraph:
 
 
 class Paths:
-    def __init__(self, G: UnDirectedGraph, s:int) -> None:
+    def __init__(self, G: UnDirectedGraph, s:int, approach: str= "dfs") -> None:
         self.graph = G
         self.source = s
         self.visited = {}
         self.edgeTo = {}
         for key in G.graph.keys():
             self.visited[key] = False
-        self.dfs(s)
+        if approach == "bfs":
+            self.bfs(s)
+        else:
+            self.dfs(s)
 
     def hasPathTo(self, v: int) -> bool:
         return self.visited[v] == True
@@ -32,6 +35,20 @@ class Paths:
             for neighbor in self.graph.graph[vertex]:
                 self.edgeTo[neighbor] = vertex
                 self.dfs(neighbor)
+    
+    def bfs(self,vertex):
+        tempq = []
+        self.visited[vertex]= True
+        tempq.append(vertex)
+        while tempq:
+            v = tempq.pop()
+            for neighbor in self.graph.graph[v]:
+                if not neighbor in self.visited:
+                    self.visited[neighbor] = False
+                if not self.visited[neighbor]:
+                    self.edgeTo[neighbor] = v
+                    self.visited[neighbor] = True
+                    tempq.append(neighbor)
 
     def pathTo(self, v: int) -> List[int]:
         if not self.visited[v]:
@@ -58,7 +75,7 @@ if __name__ == '__main__':
     g.addEdge(3, 4)
 
 
-    p = Paths(g, 0)
+    p = Paths(g, 0, "bfs")
     assert p.hasPathTo(2) == True
     assert p.pathTo(3) == [0,2,3]
 
