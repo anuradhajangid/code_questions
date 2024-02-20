@@ -122,6 +122,6 @@ if __name__ == '__main__':
     print("Following is Breadth First Traversal"
           " (starting from vertex 2)")
     dc = DepthFirstOrder(g)
-    print(dc.pre)
-    print(dc.post)
-    print(dc.reversepost)
+    assert dc.pre == deque([8, 7, 3, 2, 10, 12, 11, 9, 6, 1, 4, 5, 0]), dc.PreOrder
+    assert dc.post == deque([8, 7, 2, 3, 0, 6, 9, 10, 11, 12, 1, 5, 4]), dc.PostOrder
+    assert dc.reversepost == deque([4, 5, 1, 12, 11, 10, 9, 6, 0, 3, 2, 7, 8]), dc.ReversePostOrder

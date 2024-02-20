@@ -112,5 +112,5 @@ if __name__ == '__main__':
     print("Following is Breadth First Traversal"
           " (starting from vertex 2)")
     dc = DirectedCycle(g)
-    print(dc.HasCycle())
-    print(dc.Cycle())
+    assert dc.HasCycle() == True
+    assert dc.Cycle() == [[2,1,0]]
