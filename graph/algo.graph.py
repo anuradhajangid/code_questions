@@ -6,7 +6,9 @@ class UnDirectedGraph:
         self.graph = defaultdict(list)
     
     def addEdge(self, u,v):
+        #Adds connectivity to both vertices
         self.graph[u].append(v)
+        self.graph[v].append(u)
 
     def BFS(self, s):
         visited = [False] * (max(self.graph) + 1)
@@ -40,11 +42,9 @@ if __name__ == '__main__':
     g.addEdge(0, 1)
     g.addEdge(0, 2)
     g.addEdge(1, 2)
-    g.addEdge(2, 0)
     g.addEdge(2, 3)
-    g.addEdge(3, 3)
  
     print("Following is Breadth First Traversal"
           " (starting from vertex 2)")
-    g.DFS(2)
+    g.BFS(2)
 
