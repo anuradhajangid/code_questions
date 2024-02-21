@@ -2,126 +2,89 @@ from collections import defaultdict
 from collections import deque
 
 
-class Digraph:
-    def __init__(self) -> None:
-        self.graph = defaultdict(list)
-        self.e = []
-    
-    @property
-    def V(self):
-        return list(self.graph.keys())
-    
-    @property
-    def E(self):
-        return self.e
+from collections import defaultdict
 
-    def addEdge(self, fr:int, to:int) -> None:
-        if to:
-            self.graph[fr].append(to)
-            self.E.append((fr,to))
-        else:
-            self.graph[fr] = []
-
-    def BFS(self,s:int) -> None:
-        stack = []
-        visited = [False] * (max(self.graph) + 1)
-        stack.append(s)
-        print(s, end="")
-        visited[s] = True
-        while stack:
-            temp = stack.pop(0)
-            for x in self.graph[temp]:
-                if visited[x] == False:
-                    print(x, end="")
-                    visited[x] = True
-                    stack.append(x)
-        return 
-                
-
-    def DFS(self,s:int) -> None:
-        visited = [False] * (max(self.graph) + 1)
-        def helper(vertex:int, visited:list):
-            visited[vertex] = True
-            print(vertex, end="")
-            for i in self.graph[vertex]:
-                if visited[i] == False:
-                    helper(i, visited)
-        helper(s,visited)
-        return
+class Graph:
     
+    def __init__(self, adj_lst):        
+        self.graph = adj_lst  
     
-    def Reverse(self):
-        reverse = Digraph()
+    def addEdge(self, vertex1, vertex2): # add an edge from vertex1 to vertex2
+        if vertex1 not in self.graph:
+            self.graph[vertex1] = []
+        if vertex2 is not None:
+            self.graph[vertex1].append(vertex2)
+
+    
+    def reverseGraph(self):        
+        inverseG = Graph(defaultdict(list))
+        
         for i in self.graph:
-            for w in self.graph[i]:
-                if w not in reverse.graph:
-                    reverse.graph[w] = []
-                reverse.e.append((w,i))
-                reverse.graph[w].append(i)
-        return reverse
-    
-class DepthFirstOrder:
-    def __init__(self, g:Digraph) -> None:
-        self.grap = g.graph
-        self.pre = deque()
-        self.post = deque()
-        self.reversepost = deque()
-        visited = [False] * (max(g.graph) + 1)
-        for i in self.grap:
-            if visited[i] == False:
-                self._dfs(i, visited)
+            for j in self.graph[i]:
+                inverseG.addEdge(j, i)
+        return inverseG
 
-    def _dfs(self,v:int, visited:list):
-        self.pre.appendleft(v)
-        visited[v] = True
-        for i in self.grap[v]:
+    def finishingTimeStack(self, vertex, visited, stack):
+        '''
+        visited: a dict to record visited vertices
+        vertex: current vertex 
+        stack: push vertex to stack as DFS proceeding
+        '''
+        visited[vertex] = True
+        for i in self.graph[vertex]:
             if visited[i] == False:
-                self._dfs(i, visited)
-        self.post.appendleft(v)
-        self.reversepost.append(v)
+                self.finishingTimeStack(i, visited, stack)
+        stack.append(vertex)
+    
+    def getOneSCC(self, vertex, visited, scc):
+        scc.append(vertex)
+        visited[vertex] = True
+        
+        for v in self.graph[vertex]:
+            if visited[v] == False:
+                self.getOneSCC(v, visited, scc)
+    
+    def computeSCCs(self):
+        
+        stack = [] # order of stack is the finishing time
+        
+        ### First DFS: compute the finishing time
+        visited = defaultdict(bool) # initialized all notes as unvisited
+        
+        for i in list(self.graph.keys()): # use outer loop to ganrantee every note will be visited
+            if visited[i] == False:
+                self.finishingTimeStack(i, visited, stack)
+        
+        ### Compute a inverse graph
+        inverG = self.reverseGraph()
+        
+        ### Second DFS: compute the SCCs
+        SCC_lst = []
+        visited =  defaultdict(bool) # initialized all notes as unvisited 
+        while stack:
+            i = stack.pop()
+            if visited[i] == False:
+                scc = []
+                inverG.getOneSCC(i, visited, scc)
+                SCC_lst.append(scc)
+        return SCC_lst
 
-    @property
-    def PreOrder(self):
-        return self.pre
-    
-    @property
-    def PostOrder(self):
-        return self.post
-    
-    @property
-    def ReversePostOrder(self):
-        return self.reversepost
     
         
 if __name__ == '__main__':
  
     # Create a graph given in
     # the above diagram
-    g = Digraph()
-    g.addEdge(0, 5)
-    g.addEdge(0, 1)
-    g.addEdge(0, 6)
-    g.addEdge(1,None)
-    g.addEdge(2, 0)
-    g.addEdge(2, 3)
-    g.addEdge(3, 5)
-    g.addEdge(4, None)
-    g.addEdge(5, 4)
-    g.addEdge(6, 4)
-    g.addEdge(6, 9)
-    g.addEdge(7, 6)
-    g.addEdge(8, 7)
-    g.addEdge(9, 11)
-    g.addEdge(9, 12)
-    g.addEdge(9, 10)
-    g.addEdge(10, None)
-    g.addEdge(11, 12)
-    g.addEdge(12, None)
+    g = Graph(
+defaultdict(list,
+            {7: [1],
+             4: [7],
+             1: [4],
+             9: [7, 3],
+             6: [9],
+             8: [6, 5],
+             2: [8],
+             5: [2],
+             3: [6]}))
 
- 
-    print("Following is Breadth First Traversal"
-          " (starting from vertex 2)")
-    dc = DepthFirstOrder(g)
-    print(dc.pre)
-    print(dc.post)
-    print(dc.reversepost)
+    print(g.computeSCCs())
