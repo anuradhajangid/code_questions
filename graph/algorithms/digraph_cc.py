@@ -4,6 +4,8 @@ from collections import deque
 
 from collections import defaultdict
 
+#Ref: https://lucyliu-ucsb.github.io/posts/Kosaraju-Compute-SCC/
+
 class Graph:
     
     def __init__(self, adj_lst):        
