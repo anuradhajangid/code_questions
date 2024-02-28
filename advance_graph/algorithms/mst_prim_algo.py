@@ -119,5 +119,5 @@ print(graph)
 
 mst = LazyPrimMST(graph)
 
-print ([edge.toString() for edge in mst.Edges])
-print(mst.Vertices)
+assert [edge.toString() for edge in mst.Edges] == ['7-0 0.16', '1-7 0.19', '2-0 0.26', '3-2 0.17', '5-7 0.28', '4-5 0.35', '6-2 0.4']
+mst.Vertices == [0, 7, 1, 2, 3, 5, 4, 6]
