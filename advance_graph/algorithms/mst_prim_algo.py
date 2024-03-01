@@ -1,5 +1,6 @@
 from collections import defaultdict, deque
 from heapq import *
+from math import inf
 
 
 class Edge:
@@ -22,7 +23,7 @@ class Edge:
     def other(self,vertex):
         if not vertex in [self.v, self.w]:
             raise ValueError(f"{vertex} does not exists")
-        return self.w if self.v == vertex else self.w
+        return self.w if self.v == vertex else self.v
     
     def compareTo(self, that):
         if self.weight > that.weight:
@@ -87,7 +88,7 @@ class LazyPrimMST:
                 visited.append(min.v)
                 for edge in graph.adj_list[min.v]:
                     heappush(min_heap, edge)    
-        self.vertices = visited
+        self.vertices = len(visited)
     
     @property
     def Edges(self):
@@ -96,6 +97,46 @@ class LazyPrimMST:
     @property
     def Vertices(self):
         return self.vertices
+
+class EagerPrimMST:
+    def __init__(self, graph: EdgeWeightedGraph) -> None:
+        self.pq_map = defaultdict()
+        self.pq = []
+        self.edgeTo = defaultdict()
+        self.distTo = defaultdict()
+        self.visited = []
+        for i in range(len(graph.adj_list)):
+            self.distTo[i] = inf
+        self.distTo[0] = 0.0
+        self.visited.append(0)
+        heappush(self.pq, (0.0,0))
+        while self.pq:
+            weight, vertex = heappop(self.pq)
+            self.BFS(graph, vertex)        
+
+    def BFS(self, graph, vertex):
+        if not vertex in self.visited:
+            self.visited.append(vertex)
+        for edge in graph.adj_list[vertex]:
+            w = edge.other(vertex)
+            if w in self.visited:
+                continue
+            if edge.weight < self.distTo[w]:
+                self.edgeTo[w] = edge
+                self.distTo[w] = edge.weight
+                if w in self.pq:
+                    self.pq_map[w] = self.distTo[w]
+                else:
+                    heappush(self.pq, (self.distTo[w], w))
+                    self.pq_map[w] = self.distTo[w]
+
+    @property
+    def Edges(self):
+        return self.edgeTo.values()
+    
+    @property
+    def Vertices(self):
+        return self.visited
     
 graph = EdgeWeightedGraph(5)
 graph.addEdge(Edge(0,4,0.38))
@@ -117,7 +158,7 @@ graph.addEdge(Edge(4,6,0.93))
 
 print(graph)
 
-mst = LazyPrimMST(graph)
+mst = EagerPrimMST(graph)
 
-assert [edge.toString() for edge in mst.Edges] == ['7-0 0.16', '1-7 0.19', '2-0 0.26', '3-2 0.17', '5-7 0.28', '4-5 0.35', '6-2 0.4']
+assert set([edge.toString() for edge in mst.Edges]) == set(['7-0 0.16', '1-7 0.19', '2-0 0.26', '3-2 0.17', '5-7 0.28', '4-5 0.35', '6-2 0.4'])
 mst.Vertices == [0, 7, 1, 2, 3, 5, 4, 6]
