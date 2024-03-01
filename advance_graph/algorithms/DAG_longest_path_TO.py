@@ -85,13 +85,13 @@ class TopologicalOrder:
         return self.reversepost
     
 
-class AcyclicSP:
+class AcyclicLP:
     def __init__(self, graph: EdgeWeightedDiGraph, v) -> None:
         visited = set()
         pq = []
         cost = defaultdict(lambda:float("inf"))
         for i in range(graph.V):
-            cost[i] = float("inf")
+            cost[i] = - float("inf")
         edges_map = defaultdict()
         cost[v] = 0
         pq = TopologicalOrder(graph).ReversePostOrder
@@ -102,7 +102,7 @@ class AcyclicSP:
                 if edge.To in visited:
                     continue
                 newcost = cost[sedge.From] + sedge.weight
-                if cost[sedge.To] > newcost:
+                if cost[sedge.To] < newcost:
                     cost[sedge.To] = newcost
                     edges_map[sedge.To] = sedge
                     pq.append(sedge)
@@ -148,7 +148,7 @@ graph.addEdge(DirectedEdge(6,4,0.93))
 
 #print(graph)
 
-acyclic = AcyclicSP(graph,5)
+acyclic = AcyclicLP(graph,5)
 assert acyclic.distTo[6] == pytest.approx(1.13)
 print(acyclic.distTo)
 
