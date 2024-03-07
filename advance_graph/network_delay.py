@@ -17,18 +17,17 @@ class Solution(object):
         for s, t, w in times:
             graph[s].append((t,w))
         pq = []
-        dist = [-float("inf")] * n
+        dist = [float("inf")] * n
         dist[k-1] = 0
         heappush(pq, (0,k))
         while pq:
             weight, vertex = heappop(pq)
             for edge, edgeweight in graph[vertex]:
-                if weight + edgeweight > dist[edge-1] :
+                if weight + edgeweight < dist[edge-1] :
                     dist[edge-1] = weight + edgeweight  
                     heappush(pq, (dist[edge-1], edge))
         longest_path = max(dist)
-        shortest_path = min(dist)
-        if shortest_path != -float("inf"):
+        if longest_path != float("inf"):
             return longest_path
         return -1
                 
