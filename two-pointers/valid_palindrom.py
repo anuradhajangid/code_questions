@@ -8,7 +8,6 @@ class Solution:
         asciiChars = string.ascii_lowercase + string.ascii_uppercase + string.digits
         palindromChar = None
         while (start < end):
-            print(start, end)
             if not (s[start] in asciiChars):
                 start += 1
                 continue
@@ -22,6 +21,21 @@ class Solution:
             else:
                 return False
         return True
+    
+    def isPalindrome_approach2(self, s: str) -> bool:
+        s = s.strip().lower()
+        if not s:
+            return True
+        s = "".join([i for i in s if i.isalnum()])
+        return s == s[::-1]
+
+
+assert Solution().isPalindrome("A man, a plan, a canal: Panama") == True
+assert Solution().isPalindrome("race a car") == False
+assert Solution().isPalindrome(" ") == True
+assert Solution().isPalindrome_approach2("A man, a plan, a canal: Panama") == True
+assert Solution().isPalindrome_approach2("race a car") == False
+assert Solution().isPalindrome_approach2(" ") == True
 
 
 
