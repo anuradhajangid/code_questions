@@ -72,12 +72,12 @@ class DepthFirstOrder:
                 self._dfs(i, visited)
 
     def _dfs(self,v:int, visited:list):
-        self.pre.appendleft(v)
+        self.pre.append(v)
         visited[v] = True
         for i in self.grap[v]:
             if visited[i] == False:
                 self._dfs(i, visited)
-        self.post.appendleft(v)
+        self.post.append(v)
         self.reversepost.append(v)
 
     @property
@@ -122,6 +122,6 @@ if __name__ == '__main__':
     print("Following is Breadth First Traversal"
           " (starting from vertex 2)")
     dc = DepthFirstOrder(g)
-    assert dc.pre == deque([8, 7, 3, 2, 10, 12, 11, 9, 6, 1, 4, 5, 0]), dc.PreOrder
-    assert dc.post == deque([8, 7, 2, 3, 0, 6, 9, 10, 11, 12, 1, 5, 4]), dc.PostOrder
+    assert list(dc.pre) == [0,5,4,1,6,9,11,12,10,2,3,7,8], dc.PreOrder
+    assert list(dc.post) == [4,5,1,12,11,10,9,6,0,3,2,7,8], dc.PostOrder
     assert dc.reversepost == deque([4, 5, 1, 12, 11, 10, 9, 6, 0, 3, 2, 7, 8]), dc.ReversePostOrder
