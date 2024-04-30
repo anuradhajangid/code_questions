@@ -1,4 +1,6 @@
 #https://leetcode.com/problems/sliding-window-maximum/
+from typing import List
+from queue import deque
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         custommax = []
@@ -12,4 +14,5 @@ class Solution:
             if i >= k-1:
                 custommax.append(nums[customqueue[0]])
         return custommax
-        
+
+assert Solution().maxSlidingWindow(nums = [1,3,-1,-3,5,3,6,7], k = 3) == [3,3,5,5,6,7]

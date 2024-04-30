@@ -23,7 +23,6 @@ class Solution(object):
             for required in adj_list[course]:
                 if dfs(required):
                     return True
-                
             visited[course] = False
             reveresePO.append(course)
             

@@ -11,10 +11,8 @@ class Solution(object):
         for course,required in prerequisites:
             adj_list[course].append(required)
         def dfs(course):
-            if visited[course] == False:
-                return False
-            if visited[course] == True:
-                return True
+            if visited[course] != None:
+                return visited[course]
             visited[course] = False
             for required in adj_list[course]:
                 if not dfs(required):
