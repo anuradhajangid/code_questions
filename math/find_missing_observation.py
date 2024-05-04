@@ -7,12 +7,12 @@ class Solution:
         distribution = mean *  mn - sum_m
         if distribution <= 0 or distribution < n or distribution/n > 6:
             return []
-        dist_array = [0] * n
-        while distribution > 0:
-            for i in range(n):
-                distribution -= 1
-                if distribution < 0:
-                    break
+        if distribution % n  == 0:
+            return [distribution // n ] * n
+        else:
+            k = distribution % n
+            dist_array = [distribution // n] * n
+            for i in range(k):
                 dist_array[i] += 1
                 
         return dist_array
