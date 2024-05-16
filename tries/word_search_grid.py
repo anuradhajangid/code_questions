@@ -1,5 +1,5 @@
 #https://leetcode.com/problems/word-search-ii/description/
-
+from typing import List
 class TrieNode:
     def __init__(self) -> None:
         self.children = {}
@@ -8,55 +8,52 @@ class TrieNode:
 class WordDictionary:
     def __init__(self) -> None:
         self.root = TrieNode()
-
+    
     def addWord(self, word):
-        node = self.root
+        current = self.root
         for char in word:
-            if not char in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        node.is_word = True
+            if char in current.children:
+                current = current.children[char]
+            else:
+                current.children[char] = TrieNode()
+                current = current.children[char]
+        current.is_word = True
 
 class Solution:
     def __init__(self) -> None:
+        self.word_dict = WordDictionary()
         self.grid = None
-        self.rows = None
-        self.cols = None
-        self.trie = WordDictionary()
         
 
-    def findWords(self, grid, words):
+    def findWords(self, grid: List[List], words: List[str]) -> List[str]:
         self.grid = grid
-        self.rows = len(grid)
-        self.cols = len(grid[0])
-
+        node = self.word_dict.root
         for word in words:
-            self.trie.addWord(word)
+            self.word_dict.addWord(word)
 
         result = []
-        node = self.trie.root
-        def dfs(i, j, visited, root):
-            if root.is_word:
-                result.append(visited)
-                root.is_word = False
-            if i < 0 or i >= len(board) or j < 0 or j >= len(self.grid[0]):
-                return
-            char = self.grid[i][j]
-            if not char in root.children:
-                return 
-            curr = root.children[char]
-            self.grid[i][j] = "$"
-            dfs(i-1,j,visited+char,curr)
-            dfs(i+1,j,visited+char,curr)
-            dfs(i, j-1, visited+char, curr)
-            dfs(i,j+1,visited+char,curr)
-            self.grid[i][j] = char
-
-        for i in range(self.rows):
-            for j in range(self.cols):
-                dfs(i, j, "", node)
-
+        for row in range(0, len(grid)):
+            for col in range(0, len(grid[0])):
+                self._backtrack(row, col, "", node, result)
         return result
+    
+    def _backtrack(self, row: int, col: int, current: str, node: TrieNode, result: List):
+        if node.is_word:
+            result.append(current)
+            node.is_word = False
+            return 
+        if (row < 0 or row >= len(self.grid) or col < 0 or col >= len(self.grid[0])):
+            return
+        temp = self.grid[row][col]
+        if not temp in node.children:
+            return 
+        node = node.children[temp]
+        self.grid[row][col] = "$"
+        for r,c in [[row-1, col], [row+1, col], [row, col-1], [row, col+1]]:
+            self._backtrack(r, c, current+ temp, node, result)
+        self.grid[row][col] = temp
+
+
 board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
 words = ["oath","pea","eat","rain"]   
 s = Solution()
