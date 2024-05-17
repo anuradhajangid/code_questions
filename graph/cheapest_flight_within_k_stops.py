@@ -27,7 +27,7 @@ class Solution:
                 mincost = min(mincost, cost)
             for neighbour in self.graph.adj_list[node]:
                 searchQueue.append((neighbour[0], stops + 1, cost + neighbour[1]))
-        if mincost == 0:
+        if mincost == float("inf"):
             return -1
         return mincost
 
