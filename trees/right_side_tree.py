@@ -86,7 +86,7 @@ class Tree:
         
 
 class Solution:
-    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+    def rightSideView_v2(self, root: Optional[TreeNode]) -> List[int]:
         output = []
         height = 0
         def dfs(node, height):
@@ -99,7 +99,20 @@ class Solution:
             dfs(node.left, height)
         dfs(root, height)
         return output
-
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        from collections import deque
+        output = []
+        height = 0
+        queue = deque()
+        queue.append((root,height))
+        while queue:
+            node, height = queue.pop()
+            if node:
+                if len(output) == height:
+                    output.append(node.val)
+                queue.append((node.right, height + 1))
+                queue.append((node.left, height + 1))
+        return output
 
 tr = Tree()
 head = None
