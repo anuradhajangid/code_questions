@@ -10,14 +10,12 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         minpoints = []
-        for (x,y) in points:
+        for i, (x,y) in enumerate(points):
             distance = sqrt(x*x + y*y)
-            heappush(minpoints, (distance, x,y))
-        result = []
-        for i in range(k):
-            dist, x, y = heappop(minpoints)
-            result.append((x,y))
-        return(result)
+            heappush(minpoints, (-distance, i))
+            if len(minpoints) > k:
+                heappop(minpoints)
+        return [points[i] for _,i in minpoints]
 
-print(Solution().kClosest([[3,3],[5,-1],[-2,4]], 2))
-        
+assert (Solution().kClosest([[3,3],[5,-1],[-2,4]], 2)) == [[-2, 4], [3, 3]]
+assert Solution().kClosest([[-95,76],[17,7],[-55,-58],[53,20],[-69,-8],[-57,87],[-2,-42],[-10,-87],[-36,-57],[97,-39],[97,49]], 5) == [[17,7],[-2,-42],[53,20],[-36,-57],[-69,-8]]
