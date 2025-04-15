@@ -11,6 +11,19 @@ class Solution(object):
         self.backtrack(0,candidates, target, [], result)
         return result
     
+    def backtrack_v2(self, index, nums, target, path, result):
+        if target < 0:
+            return 
+        if target == 0:
+            result.append(path)
+            return 
+        prev = -1
+        for i in range(index,len(nums)):
+            if nums[i] == prev:
+                continue
+            self.backtrack(i+1, nums, target-nums[i], path+[nums[i]], result)
+            prev = nums[i]
+    
     def backtrack(self, index, nums, target, path, result):
         if target < 0:
             return 
