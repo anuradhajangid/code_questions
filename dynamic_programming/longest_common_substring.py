@@ -68,7 +68,7 @@ class Solution:
             table = current_row
         return maxlen
                     
-
+assert Solution().lcs_tabulation_space_optimization("abcde", "ace" ) == 1
 assert Solution().lcs_tabulation_space_optimization("hello elf", "hello yourself") == 6
 assert Solution().lcs_tabulation_space_optimization("hello", "elf") == 2
 assert Solution().lcs_recursion("hello", "elf") == 2
