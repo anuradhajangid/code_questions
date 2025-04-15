@@ -13,13 +13,15 @@ class Solution(object):
     @staticmethod
     def _backtrack(nums, result, path):
         if len(path) == len(nums):
-            result.append(copy.deepcopy(path))
+            result.append(path)
+            #result.append(copy.deepcopy(path))
             return
         for num in nums:
             if num not in path:
-                path.append(num)
-                Solution._backtrack(nums, result, path)
-                path.pop()
+                #path.append(num)
+                #Solution._backtrack(nums, result, path)
+                Solution._backtrack(nums, result, path+[num])
+                #path.pop()
 
 
         
