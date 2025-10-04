@@ -15,7 +15,7 @@ class Solution:
             linelen += len(word)
         
         if line:
-            line.append(" " * (maxWidth - linelen - len(line)) if linelen < maxWidth else "")
+            line.append(" " * (maxWidth - linelen - len(line)) if (linelen - len(line)) < maxWidth else "")
             lines.append(" ".join(line))
         return lines
 
